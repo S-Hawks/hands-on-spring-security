@@ -6,13 +6,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.codec.Decoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.DefaultMessageCodesResolver;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -49,10 +50,10 @@ public class JwtUtils {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() * 1000 * 60 * 24))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS384)
+                .signWith(SignatureAlgorithm.HS256,getSignInKey())
                 .compact();
     }
-    private <T> T extractClaims(String token, Function<Claims, T> claimsResolver){   //Function<T,R> claimResolver it mainly take a object T and Return R as requirement
+    private <T> T extractClaims(String token, Function<Claims, T> claimsResolver){   //Function<T,R> claimResolver it mainly take a object T and Return R.
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
