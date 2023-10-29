@@ -3,7 +3,7 @@ package com.faiaz.securityv2.auth;
 import com.faiaz.securityv2.config.JwtUtils;
 import com.faiaz.securityv2.user.Role;
 import com.faiaz.securityv2.user.User;
-import com.faiaz.securityv2.user.UserDetailsImpl;
+import com.faiaz.securityv2.config.UserDetailsImpl;
 import com.faiaz.securityv2.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,8 +39,8 @@ public class AuthenticationService {
         authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var userDetails = new UserDetailsImpl(user);
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
         var jwtToken = jwtUtils.generateToken(userDetails);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

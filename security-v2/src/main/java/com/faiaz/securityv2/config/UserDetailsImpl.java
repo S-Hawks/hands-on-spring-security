@@ -1,8 +1,8 @@
-package com.faiaz.securityv2.user;
+package com.faiaz.securityv2.config;
 
+import com.faiaz.securityv2.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ public class UserDetailsImpl implements UserDetails {
     private final User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        List.of(user.getRole().name());
         return null;
     }
 
